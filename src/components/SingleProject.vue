@@ -1,5 +1,5 @@
 <template>
-  <div class="project">
+  <div class="project" :class="{ completed: project.completed }">
     <div class="actions">
       <h3 class="text-xl font-bold text-red-300" @click="show = !show">
         {{ project.title }}
@@ -7,7 +7,12 @@
       <div class="icons">
         <span class="material-icons">edit</span>
         <span class="material-icons" @click="deleteItem">delete</span>
-        <span class="material-icons">done</span>
+        <span
+          class="material-icons"
+          @click="completed"
+          :class="{ tick: project.completed }"
+          >done</span
+        >
       </div>
     </div>
     <div class="details" v-if="show">
@@ -27,13 +32,21 @@ export default {
     };
   },
   methods: {
-    deleteItem() {
+    async deleteItem() {
       try {
-        axios.delete(this.url);
+        await axios.delete(this.url);
         // emit the deleted id to HomeView
         this.$emit("delete", this.project.id);
       } catch (e) {
         console.error("Error deleting project", e);
+      }
+    },
+    async completed() {
+      try {
+        await axios.patch(this.url, { completed: !this.project.completed });
+        this.$emit("completed", this.project.id);
+      } catch (e) {
+        console.error("Error completing project", e);
       }
     },
   },
@@ -58,9 +71,19 @@ h3 {
   justify-content: space-between;
 }
 .material-icons {
-  font-size: 14px;
+  font-size: 18px;
+
   margin-left: 10px;
   color: #bbb;
   cursor: pointer;
+}
+.material-icons:hover {
+  color: #777;
+}
+.completed {
+  border-left: 6px solid #00ce89;
+}
+.tick {
+  color: #00ce89;
 }
 </style>
