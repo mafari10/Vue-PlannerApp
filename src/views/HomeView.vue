@@ -2,7 +2,7 @@
   <div class="home">
     <div v-if="projects.length">
       <div v-for="project in projects" :key="project.id">
-        <SingleProject :project="project" />
+        <SingleProject :project="project" @delete="handleDelete" />
       </div>
     </div>
   </div>
@@ -19,7 +19,14 @@ export default {
       projects: [],
     };
   },
-  async created() {
+  methods: {
+    handleDelete(id) {
+      this.projects = this.projects.filter((project) => {
+        return project.id !== id;
+      });
+    },
+  },
+  async mounted() {
     try {
       const response = await axios.get("http://localhost:3000/projects");
       this.projects = response.data;

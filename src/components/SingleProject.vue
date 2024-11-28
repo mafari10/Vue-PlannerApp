@@ -6,7 +6,7 @@
       </h3>
       <div class="icons">
         <span class="material-icons">edit</span>
-        <span class="material-icons">delete</span>
+        <span class="material-icons" @click="deleteItem">delete</span>
         <span class="material-icons">done</span>
       </div>
     </div>
@@ -17,12 +17,25 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: ["project"],
   data() {
     return {
       show: true,
+      url: "http://localhost:3000/projects/" + this.project.id,
     };
+  },
+  methods: {
+    deleteItem() {
+      try {
+        axios.delete(this.url);
+        // emit the deleted id to HomeView
+        this.$emit("delete", this.project.id);
+      } catch (e) {
+        console.error("Error deleting project", e);
+      }
+    },
   },
 };
 </script>
