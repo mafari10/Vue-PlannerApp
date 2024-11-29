@@ -4,7 +4,7 @@
       "id": "1",
       "title": "Grocery Shopping",
       "details": "Buy milk, eggs, bread, and vegetables from the store.",
-      "completed": false
+      "completed": true
     },
     {
       "id": "2",
