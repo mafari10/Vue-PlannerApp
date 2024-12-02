@@ -5,7 +5,9 @@
         {{ project.title }}
       </h3>
       <div class="icons">
-        <span class="material-icons">edit</span>
+        <router-link :to="{ name: 'edit', params: { id: project.id } }">
+          <span class="material-icons">edit</span>
+        </router-link>
         <span class="material-icons" @click="deleteItem">delete</span>
         <span
           class="material-icons"
@@ -23,8 +25,10 @@
 
 <script>
 import axios from "axios";
+import EditProject from "@/views/EditProject.vue";
 export default {
   props: ["project"],
+  components: { EditProject },
   data() {
     return {
       show: true,
